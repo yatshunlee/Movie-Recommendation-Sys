@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+div.ReviewsBoardContainer {
+  height: 300px;
+  overflow: scroll;
+}
+
+</style>
+</head>
+
+<!--
+<p><h2>Title: {{ movie.title }}</h2></p>
+
+  <p><strong>Movie ID: </strong>{{ searched.id }}</p>
+  <p><strong>Publish Date: </strong> {{ searched.year }}</p>
+  <p><strong>Genre: </strong> {{ searched.genre.all|join:", " }}</p>
+  <p><strong>Description: </strong> {{ searched.description }}</p>
+-->
+    <script>
+        function passReviewId(value){
+            document.getElementById("productid").value = value;
+        }
+    </script>
+
+
+
+    {% load static %}
+    <div class="ResultContainer">
+        <h2>Search Result for Movie: {{ searched.title }}</h2>
+        <p><img src='../../static/posters/{{ searched.id }}.jpg' alt="Searched Movie Poster" width="190" height="281"></p>
+        <p><strong>Year:</strong> {{ searched.year }}</p>
+		<p>
+            <strong>Genres:</strong>
+            {% for genre in searched.genres %}
+                <!--<a href="/movie/genreMovie/{{ genre|lower }}"> {{ genre }}</a>-->
+				{{ genre }}
+            {% endfor %}
+        </p>
+		<p><strong>Description:</strong> {{ searched.des }}</p>
+    </div>
+
+
+    <form action="/movie/movie/{{ movie.id }}/rating/" method="GET" > {% csrf_token %}
+        <input type="text" name="action" id="action" style="display:none;" value ="view" >
+        <input type="text" name="MovieID" id="MovieID" style="display:none;" value = {{ movie.id }} >
+        {% if isUser > -1 %}
+            {% if not rated %}
+                <p><a href="{{ movie.id }}/rating/"><button type="submit" class="btn btn-info">Add Rating</button></a></p>
+            {% else %}
+                <p><a href="{{ movie.id }}/rating/"><button type="submit" class="btn btn-info">Edit Rating</button></a></p>
+            {% endif %}
+        {% else %}
+            <p style="color:red;">You need an account before adding rating and review.</p>
+        {% endif %}
+    </form>
+
+    <h2>Reviews</h2>
+    <div class="ReviewsBoardContainer">
+          <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Datetime</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Review</th>
+              <th scope="col">View Comment(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for id, review in related_reviews.items %}
+             <tr>
+                 <td>
+                     {{ review.username }}
+                 </td>
+                 <td>
+                     {{ review.timestamp }}
+                 </td>
+                 <td>
+                     {{ review.rating }}
+                 </td>
+                 <td>
+                     {{ review.review }}
+                 </td>
+                 <td>
+                     <button type="button" class="btn btn-secondary" onclick="passReviewId(this.value)" value="{{ id }}"
+                             title="comment" data-toggle="modal" data-target="#modal-default{{ id }}">
+                         {{ comments|keyvalue:id|length }} Comment(s)
+                     </button>
+                 </td>
+             </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+    </div>
+    {% for id in related_reviews.keys %}
+    <div class="modal fade" id="modal-default{{ id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalCenterTitle">View Comment(s)</h5>
+                     <!--cross, "x", symbol on the top right corner of the pop-up modal-->
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+
+                 <div class="modal-body">
+                     <div style="height: 250px; overflow: auto;">
+                     <table class="table table-bordered" >
+                        <thead>
+                            <tr>
+                                <th scope="col">Username</th>
+                                <th scope="col">Datetime</th>
+                                <th scope="col">Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for comments in comments|keyvalue:id %}
+                            <tr>
+                                {% for cm in comments %}
+                                <td>{{ cm }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                     </table>
+                     </div>
+                     {% if isUser > -1 %}
+                         <form action="" method="POST" > {% csrf_token %}
+                             <textarea id="comment" type="textarea" name="comment" class="form-control mb-3"
+                                       rows="3" maxlength="500" required></textarea>
+                             <div class="modal-footer">
+                                 <button type="submit" class="btn btn-primary" name="addcomment" value="{{ id }}">Add Comment</button>
+                             </div>
+                         </form>
+                     {% else %}
+                        <p style="color:red;">You need an account before adding comment.</p>
+                    {% endif %}
+                 </div>
+            </div>
+       </div>
+    </div>
+    {% endfor %}
+
+    <div class="RenderTable">
+        <h1>You may also interested in:</h1>
+        {% if recommended %}
+            <ul>
+              {% for movie in recommended %}
+                <li>
+                  <a href="/movie/movie/{{ movie.id }}">{{ movie.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color:red;">Be the first one who rate the movie!</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

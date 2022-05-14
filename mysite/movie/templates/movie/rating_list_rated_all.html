@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_staff %}
+<p></p>
+<p></p>
+    <h2>Rated Movies</h2>
+
+{% if rating_list %}
+<table class="table">
+  <thead>
+    <tr>
+	  <th scope="col">User</th>
+      <th scope="col">Movie</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+    </tr>
+  </thead>
+
+
+
+  <tbody>
+  {% for movieinst in rating_list %}
+    <tr>
+      <td>
+	  {{ movieinst.user_id }}
+	  </td>
+      <td>
+	  <a href="{% url 'movie-detail' movieinst.movie_id.pk %}">{{movieinst.movie_id.title}}</a>
+	  </td>
+      <td>
+	  {{ movieinst.rating }}
+	  </td>
+      <td>
+	  {{ movieinst.review }}
+	  </td>
+    </tr>
+	{% endfor %}
+  </tbody>
+</table>
+
+<button onclick="buttonClick()">Jump To</button>
+<input type="number" id="inc" value="1"></input>
+
+
+
+<script>
+    var i = 0;
+    function buttonClick() {
+        page=document.getElementById('inc').value
+		window.location.href="http://127.0.0.1:8000/movie/rated/?page="+page
+    }
+</script>
+
+    {% else %}
+      <p>There are no movies rated.</p>
+    {% endif %}
+
+	
+{% else %}	
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+{% endblock %}
+

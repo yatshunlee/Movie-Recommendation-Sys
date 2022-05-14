@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p><h5><strong>Movie:</strong> {{title}}</h5></p>
+    <p><strong>Username:</strong> {{user}}</p>
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+	<div class="field is-horizontal">
+        <label for="rating"><strong>Rating:</strong> </label>
+        <input id="rating" type="number" name="rating" step="0.5"  min="0" max="5" value="{{review_inst.rating}}" required>
+	</div>	
+	
+    <div class="field is-horizontal">
+		<label for="review"><strong>Review:</strong> </label>
+        <textarea id="review" type="textarea" name="review" maxlength="500" required>{{review_inst.review}}</textarea>
+	</div>	
+        <input type="submit" name="Submit" value="Submit" class="btn btn-info"/>
+        {% if review_inst.review %}
+            <input type="submit" name="Delete" value="Delete" class="btn btn-danger"/>
+        {% endif %}
+</form>
+
+{% endblock %}

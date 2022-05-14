@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+
+  <div class="col-md-offset-3 col-md-6 col-sm-12">
+    <h1>Movie List</h1>
+  </div>
+
+  <ul>
+      <li><strong>Movie:</strong> {{ num_movies }}</li>
+      <li><strong>Rating / Review:</strong> {{ num_rating }}</li>
+      <li id="results"><strong>Genre:</strong> {{ num_genres }}</li>
+  </ul>
+
+  <div class="col-md-offset-3 col-md-6 col-sm-12">
+    <h1>Recent Added Movies</h1>
+  </div>
+
+  <ul>
+      {% for new in new_movies %}
+          <li><a href="../movie/movie/{{ new.id }}">
+              {{ new.title }} ({{ new.year }})
+          </a></li>
+      {% endfor %}
+  </ul>
+
+<script>
+    var result = ""
+
+    for (item of ${{num_genres}}.values()) {
+       result = result + " <a href='/movie/genreMovie/" + item + "'>"+ item + "</a>";
+
+document.getElementById('results').innerHTML = result
+
+</script>
+				  
+</div>
+
+
+{% endblock %}

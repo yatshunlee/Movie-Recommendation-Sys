@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_staff %}
+
+<p><h2>Movie</h2></p>
+
+{% if id %}
+<p><strong>Movie ID: {{ id }}</strong></p>
+{% endif %}
+
+<form action="" method="post" autocomplete="on">
+    {% csrf_token %} <!--to ensure that our forms are resistant to CSRF attacks.-->
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit" />
+</form>
+
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+
+{% endblock %}

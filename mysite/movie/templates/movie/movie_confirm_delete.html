@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if user.is_staff %}
+
+
+<p><h2>Delete Movie</h2></p>
+
+<p>Are you sure you want to delete the movie: {{ movie }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" action="" value="Yes, delete." />
+</form>
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+
+
+{% endblock %}

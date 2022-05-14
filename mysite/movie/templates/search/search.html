@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="SearchBar">
+        <form action = "" method = "POST">
+			<div class="field is-horizontal">
+			    <label for="InputTitle">Search Movie: </label>
+                <input id="InputTitle" type="text" name="InputTitle" placeholder="Movie Title">
+                <input type="submit" value="Submit" class="btn btn-info">
+	        </div>
+
+            {% csrf_token %}
+        </form>
+        <br><br>
+    </div>
+
+    <div class="PossibleResultContainer">
+        {% if typo %}
+            <h3>No search results matching {{ searched.title }} were found.</h3>
+        {% elif possible_results|length > 0 %}
+            <h3>About {{ possible_results|length }} search results</h3>
+            <button onclick="sortList()" class="btn btn-info">Sort By Year</button>
+            <ul id="possibleResults">
+                <br>
+            {% for possible in possible_results %}
+                <li><a href="../movie/movie/{{ possible.possible_id }}">
+                    {{ possible.possible_title }} ({{ possible.possible_year }})
+                </a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+    <script>
+        function sortList() {
+            var possibleResults = document.getElementById("possibleResults");
+            var possibleResultsList = possibleResults.getElementsByTagName("li");
+            for (var i = possibleResultsList.length - 1; i >= 0; i--) {
+                possibleResults.appendChild(possibleResultsList[i]);
+        }}
+    </script>
+
+{% endblock %}
+

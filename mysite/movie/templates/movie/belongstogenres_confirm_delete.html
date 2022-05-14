@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_staff %}
+
+<h1>Delete Genre</h1>
+
+<p>Are you sure you want to delete the genre: {{ belongstogenres.movie_id.title }}- {{ belongstogenres }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" action="" value="Yes, delete." />
+</form>
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+
+{% endblock %}

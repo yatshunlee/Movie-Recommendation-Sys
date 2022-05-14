@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_staff %}
+
+<p><h2>Genre</h2></p>
+<form action="" method="post">
+    {% csrf_token %} <!--to ensure that our forms are resistant to CSRF attacks.-->
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Submit" />
+
+</form>
+
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+{% endblock %}

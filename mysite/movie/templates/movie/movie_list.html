@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+
+
+{% block content%}
+{% load static %}
+  <head>
+    <!-- reference your installed Font Awesome package's files here -->
+    <script src="{% static 'fontawesome/js/all.min.js' %}"></script>
+  </head>
+
+{% if user.is_staff %}
+  
+  <p><h1>Movie List</h1></p>
+  
+<p><a href="{% url 'movie_create'%}"><button type="button" class="btn btn-info">Create</button></a></p>  
+  
+  {% if movie_list %}
+  
+  <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Movie</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  
+  
+  <tbody>
+  {% for movie in movie_list %}
+    <tr>
+      <td>
+	  <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+	  </td>
+      <td>
+	  <a href="/movie/movie/{{ movie.id }}/update/"><i class="fas fa-edit"></i></a>
+	  </td>
+      <td>
+	  <a href="/movie/movie/{{ movie.id }}/delete/"><i class="fas fa-trash"></i></a>
+	  </td>
+    </tr>
+	{% endfor %}
+  </tbody>
+</table>  
+  
+  
+<button onclick="buttonClick()">Jump To</button>
+<input type="number" id="inc" value="1"></input>
+
+<script>
+    var i = 0;
+    function buttonClick() {
+        page=document.getElementById('inc').value
+		window.location.href="http://127.0.0.1:8000/movie/movies/?page="+page
+    }
+</script>  
+
+  {% else %}
+    <p>There are no movies in the library.</p>
+  {% endif %} 
+
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+  
+{% endblock %}
+

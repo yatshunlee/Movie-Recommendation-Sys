@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_staff %}
+<p><h2>Maintenance</h2></p>
+
+  <ul>
+  	  <li>
+	    <a href="{% url 'genres'%}">Genre</a>
+	  </li>
+      <li>
+        <a href="{% url 'movies'%}">Movie</a>
+      </li>
+	  <li>
+	    <a href="{% url 'users'%}">User</a>
+	  </li>
+  </ul>
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}
+{% endblock %}

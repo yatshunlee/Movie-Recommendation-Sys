@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+
+{% block content%}
+{% load static %}
+  <head>
+    <!-- reference your installed Font Awesome package's files here -->
+    <script src="{% static 'fontawesome/js/all.min.js' %}"></script>
+  </head>
+
+{% if user.is_staff %}
+
+  <p><h1>Genre List</h1></p>
+
+<p><a href="{% url 'genre_create'%}"><button type="button" class="btn btn-info">Create</button></a></p>  
+  
+  {% if belongstogenres_list %}
+  
+  <table class="table table-bordered">
+  <thead>
+    <tr>
+	  <th scope="col">Movie</th>
+      <th scope="col">Genre</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  
+  
+  <tbody>
+  {% for genre in belongstogenres_list %}
+    <tr>
+	  <td>
+	  <a href="/movie/movie/{{ genre.movie_id.id }}">{{ genre.movie_id.title }}</a>
+	  </td>
+      <td>
+
+	  {{ genre.genre }}
+
+	  </td>
+      <td>
+	  <a href="/movie/genres/{{ genre.id }}/update/"><i class="fas fa-edit"></i></a>
+	  </td>
+      <td>
+	  <a href="/movie/genres/{{ genre.id }}/delete/"><i class="fas fa-trash"></i></a>
+	  </td>
+    </tr>
+	{% endfor %}
+  </tbody>
+</table>  
+  
+<button onclick="buttonClick()">Jump To</button>
+<input type="number" id="inc" value="1"></input>
+
+<script>
+    var i = 0;
+    function buttonClick() {
+        page=document.getElementById('inc').value
+		window.location.href="http://127.0.0.1:8000/movie/genres/?page="+page
+    }
+</script>
+
+
+  {% else %}
+    <p>There are no genres in the library.</p>
+  {% endif %} 
+
+
+{% else %}
+<p>You are not authorized to enter this page.</p>
+{% endif %}  
+  
+{% endblock %}
