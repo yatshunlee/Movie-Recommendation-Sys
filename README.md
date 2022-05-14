@@ -1,6 +1,9 @@
 # Movie-Recommendation-Sys
-Using dataset from https://grouplens.org/datasets/movielens/ to build a recommendation system by KNN.
-Besides, for future update, we can also use matrix completion technique to make a better prediction: like iterative soft threshold SVD or even deep latent factor model.
+It is a group project of SDSC5003 Storing and Retrieving Data. Our project is to build a web-based movie recommendation system.
+You can search any movie, like and comment, and look for some recommendation on the website.
+The dataset is from https://grouplens.org/datasets/movielens/ and poster images from IMDB website.
+
+I built a recommendation system by KNN (collaborative filtering). Besides, for future update, we can use matrix completion technique to make a better prediction: like iterative soft threshold SVD or even deep latent factor model.
 
 Demo: https://www.youtube.com/watch?v=qJIU_dSHxOY&t=33s&ab_channel=YatshunLee
 
